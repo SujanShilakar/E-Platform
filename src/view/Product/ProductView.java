@@ -12,16 +12,24 @@ public class ProductView extends JFrame {
     public JTextField deleteIdField = new JTextField(5);
     public JButton addButton = new JButton("Add Product");
     public JButton deleteButton = new JButton("Delete Product");
+    public JButton viewReportButton = new JButton("View Sales Report");
+    public JButton updateButton = new JButton("Update Product");
+    public JButton backButton = new JButton("Back");
+
     public JTable productTable;
     public DefaultTableModel tableModel;
 
     public ProductView() {
         setTitle("Product Management");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(850, 400);
+        setLocationRelativeTo(null); // ✅ Center on screen
+
         setLayout(new BorderLayout());
 
-        // Input panel
+        // Input Panel
         JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         inputPanel.add(new JLabel("ID:"));
         inputPanel.add(idField);
         inputPanel.add(new JLabel("Name:"));
@@ -32,21 +40,25 @@ public class ProductView extends JFrame {
         inputPanel.add(stockField);
         inputPanel.add(addButton);
 
-        // Delete panel
-        JPanel deletePanel = new JPanel();
-        deletePanel.add(new JLabel("Delete ID:"));
-        deletePanel.add(deleteIdField);
-        deletePanel.add(deleteButton);
-
         // Table
         tableModel = new DefaultTableModel(new Object[]{"ID", "Name", "Price", "Stock"}, 0);
         productTable = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(productTable);
+
+        // Control Panel
+        JPanel controlPanel = new JPanel();
+        controlPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+        controlPanel.add(new JLabel("Delete ID:"));
+        controlPanel.add(deleteIdField);
+        controlPanel.add(deleteButton);
+        controlPanel.add(updateButton);
+        controlPanel.add(viewReportButton);
+        controlPanel.add(backButton);
 
         add(inputPanel, BorderLayout.NORTH);
-        add(new JScrollPane(productTable), BorderLayout.CENTER);
-        add(deletePanel, BorderLayout.SOUTH);
+        add(scrollPane, BorderLayout.CENTER);
+        add(controlPanel, BorderLayout.SOUTH);
 
-        setSize(800, 300);
         setVisible(true);
     }
 

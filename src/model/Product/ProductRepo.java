@@ -1,14 +1,12 @@
 package model.Product;
 
-import model.Product.Product;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductRepo {
-    private List<Product> products = new ArrayList<>();
+    private List<ProductModel> products = new ArrayList<>();
 
-    public void addProduct(Product p) {
+    public void addProduct(ProductModel p) {
         products.add(p);
     }
 
@@ -16,7 +14,7 @@ public class ProductRepo {
         products.removeIf(p -> p.getId() == id);
     }
 
-    public List<Product> getAllProducts() {
+    public List<ProductModel> getAllProducts() {
         return products;
     }
 }
