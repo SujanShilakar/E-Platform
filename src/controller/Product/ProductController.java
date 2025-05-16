@@ -1,12 +1,19 @@
 package controller.Product;
+import controller.Notification.NotificationController;
+import model.Login.LoginModel;
+import model.Login.LoginRepo;
+import model.Notification.NotificationRepo;
 import model.Product.ProductModel;
 import model.Product.ProductRepo;
+import view.Login.LoginView;
 import view.Product.ProductView;
 import view.Sales.SalesView;
 import model.Sales.SalesRepo;
 import  model.Sales.SalesModel;
 import view.SellerHomePage.SellerHomePageView;
+import controller.Login.LoginController;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -14,11 +21,14 @@ import java.util.List;
 public class ProductController {
     private ProductRepo repo;
     private ProductView view;
+    private String username;
+    private NotificationRepo notificationrepo;
 
-    public ProductController(ProductRepo repo, ProductView view) {
+    public ProductController(ProductRepo repo, ProductView view, String username, NotificationRepo notificationRepo) {
         this.repo = repo;
         this.view = view;
-
+        this.username = username;
+        this.notificationrepo = notificationRepo;
 
         view.addButton.addActionListener(new ActionListener() {
             @Override
@@ -60,20 +70,31 @@ public class ProductController {
         view.backButton.addActionListener(e -> {
             view.dispose(); // close product window
 
-
-            SellerHomePageView home = new SellerHomePageView("Seller");
+            SellerHomePageView home = new SellerHomePageView(username);
             home.setVisible(true);
 
             home.manageProductsButton.addActionListener(ev -> {
                 ProductView newProductView = new ProductView();
-                new ProductController(repo, newProductView);
+                new ProductController(repo, newProductView, username, notificationRepo);
             });
 
             home.salesReportButton.addActionListener(ev -> {
                 SalesRepo salesRepo = new SalesRepo();
                 new SalesView(salesRepo.getAllSales());
             });
+
+            home.notifyButton.addActionListener(ev -> {
+                new NotificationController(username, notificationRepo);
+            });
+
+            home.logoutButton.addActionListener(ev -> {
+                home.dispose();
+                LoginView newLogin = new LoginView();
+                new LoginController(new LoginRepo(), newLogin);
+                newLogin.setVisible(true);
+            });
         });
+
 
 
 
@@ -106,10 +127,6 @@ public class ProductController {
                 view.showMessage("Invalid input!");
             }
         });
-
-
-
-
     }
     private void refreshTable() {
         view.tableModel.setRowCount(0); // Clear table

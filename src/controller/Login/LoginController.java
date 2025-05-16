@@ -10,6 +10,7 @@ import view.Customer.CustomerView;
 import view.SellerHomePage.SellerHomePageView;
 import view.Sales.SalesView;
 import model.Sales.SalesRepo;
+import model.Notification.NotificationRepo;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +28,7 @@ public class LoginController {
             public void actionPerformed(ActionEvent e) {
                 String username = loginView.usernameField.getText();
                 String password = new String(loginView.passwordField.getPassword());
-                String role = ((String)loginView.roleComboBox.getSelectedItem()).toLowerCase();
+                String role = ((String) loginView.roleComboBox.getSelectedItem()).toLowerCase();
 
                 LoginModel user = userRepo.authenticate(username, password, role);
                 if (user != null) {
@@ -43,12 +44,33 @@ public class LoginController {
                         sellerHome.manageProductsButton.addActionListener(ev -> {
                             ProductRepo productRepo = new ProductRepo();
                             ProductView productView = new ProductView();
-                            new ProductController(productRepo, productView);
+                            NotificationRepo notificationRepo = new NotificationRepo();
+                            new ProductController(productRepo, productView , username , notificationRepo);
+                            sellerHome.dispose();
                         });
+                        sellerHome.logoutButton.addActionListener(ev -> {
+                            sellerHome.dispose(); // Close seller dashboard
+                            LoginView newLogin = new LoginView();
+                            new LoginController(userRepo, newLogin); // Rebuild login screen
+                            newLogin.setVisible(true);
+                        });
+
 
                         sellerHome.salesReportButton.addActionListener(ev -> {
                             SalesRepo salesRepo = new SalesRepo();
                             new SalesView(salesRepo.getAllSales());
+                        });
+                    }
+                    if ("customer".equals(role)) {
+                        NotificationRepo notificationRepo = new NotificationRepo(); // create shared notification store
+                        CustomerView customerView = new CustomerView(notificationRepo);
+                        customerView.setVisible(true);
+
+                        customerView.logoutButton.addActionListener(ev -> {
+                            customerView.dispose(); // Close customer view
+                            LoginView newLogin = new LoginView();
+                            new LoginController(userRepo, newLogin); // Reopen login
+                            newLogin.setVisible(true);
                         });
                     }
 
@@ -57,5 +79,8 @@ public class LoginController {
                 }
             }
         });
+
+
+
     }
 }
