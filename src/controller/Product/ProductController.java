@@ -107,9 +107,6 @@ public class ProductController {
             }
         });
 
-
-
-
     }
     private void refreshTable() {
         view.tableModel.setRowCount(0); // Clear table
