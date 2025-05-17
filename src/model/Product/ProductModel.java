@@ -6,6 +6,18 @@ public class ProductModel {
     private double price;
     private int stock;
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public ProductModel(int id, String name, double price, int stock) {
         this.id = id;
         this.name = name;
@@ -14,12 +26,25 @@ public class ProductModel {
     }
 
     // Getters and setters
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public double getPrice() { return price; }
-    public int getStock() { return stock; }
+    public int getId() {
+        return id;
+    }
 
-    public void setStock(int stock) { this.stock = stock; }
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 
     @Override
     public String toString() {

@@ -1,5 +1,6 @@
 package controller.Login;
 
+import controller.Notification.NotificationController;
 import model.Login.LoginModel;
 import model.Login.LoginRepo;
 import view.Login.LoginView;
@@ -29,24 +30,28 @@ public class LoginController {
                 String username = loginView.usernameField.getText();
                 String password = new String(loginView.passwordField.getPassword());
                 String role = ((String) loginView.roleComboBox.getSelectedItem()).toLowerCase();
-
                 LoginModel user = userRepo.authenticate(username, password, role);
                 if (user != null) {
                     loginView.showMessage("Login Successful as " + role);
                     loginView.dispose();
 
-                    if ("seller".equals(role)) {
+                   /* if ("seller".equals(role)) {
                         // Open seller dashboard instead of product view
+                        ProductRepo productRepo = new ProductRepo();
                         SellerHomePageView sellerHome = new SellerHomePageView(user.getUsername());
                         sellerHome.setVisible(true);
 
                         // Handle button clicks in Home Screen
-                        sellerHome.manageProductsButton.addActionListener(ev -> {
+                       sellerHome.manageProductsButton.addActionListener(ev -> {
                             ProductRepo productRepo = new ProductRepo();
                             ProductView productView = new ProductView();
-                            NotificationRepo notificationRepo = new NotificationRepo();
-                            new ProductController(productRepo, productView , username , notificationRepo);
+
+                            new ProductController(productRepo, productView, username, notificationRepo);
                             sellerHome.dispose();
+                        });
+                        sellerHome.manageProductsButton.addActionListener(ev -> {
+                            ProductView productView = new ProductView();
+                            new ProductController(productRepo, productView, user.getUsername(), notificationRepo);
                         });
                         sellerHome.logoutButton.addActionListener(ev -> {
                             sellerHome.dispose(); // Close seller dashboard
@@ -54,15 +59,49 @@ public class LoginController {
                             new LoginController(userRepo, newLogin); // Rebuild login screen
                             newLogin.setVisible(true);
                         });
+                        sellerHome.notifyButton.addActionListener(ev -> {
+                            new NotificationController(user.getUsername(), notificationRepo);
+                        });
 
 
                         sellerHome.salesReportButton.addActionListener(ev -> {
                             SalesRepo salesRepo = new SalesRepo();
                             new SalesView(salesRepo.getAllSales());
                         });
+                    }*/
+                    if ("seller".equals(role)) {
+                        ProductRepo productRepo = new ProductRepo(); // ✅ shared repo
+                        SellerHomePageView sellerHome = new SellerHomePageView(user.getUsername());
+                        NotificationRepo notificationRepo = new NotificationRepo();
+
+
+                        sellerHome.manageProductsButton.addActionListener(ev -> {
+                            ProductView productView = new ProductView();
+                            new ProductController(productRepo, productView, user.getUsername(), notificationRepo,sellerHome);
+                        });
+
+                        sellerHome.salesReportButton.addActionListener(ev -> {
+                            SalesRepo salesRepo = new SalesRepo();
+                            new SalesView(salesRepo.getAllSales());
+                        });
+
+                        sellerHome.notifyButton.addActionListener(ev -> {
+                            new NotificationController(user.getUsername(), notificationRepo);
+                        });
+
+                        sellerHome.logoutButton.addActionListener(ev -> {
+                            sellerHome.dispose();
+                            LoginView newLogin = new LoginView();
+                            new LoginController(userRepo, newLogin);
+                            newLogin.setVisible(true);
+                        });
+
+                        sellerHome.setVisible(true); // ✅ only show after wiring buttons
                     }
+
                     if ("customer".equals(role)) {
-                        NotificationRepo notificationRepo = new NotificationRepo(); // create shared notification store
+                        NotificationRepo notificationRepo = new NotificationRepo();
+
                         CustomerView customerView = new CustomerView(notificationRepo);
                         customerView.setVisible(true);
 
@@ -72,6 +111,7 @@ public class LoginController {
                             new LoginController(userRepo, newLogin); // Reopen login
                             newLogin.setVisible(true);
                         });
+
                     }
 
                 } else {
@@ -79,7 +119,6 @@ public class LoginController {
                 }
             }
         });
-
 
 
     }

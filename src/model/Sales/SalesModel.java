@@ -1,9 +1,9 @@
 package model.Sales;
 
 public class SalesModel {
-    private String productName;
-    private int quantitySold;
-    private double unitPrice;
+    private final String productName;
+    private final int quantitySold;
+    private final double unitPrice;
 
     public SalesModel(String productName, int quantitySold, double unitPrice) {
         this.productName = productName;
@@ -11,9 +11,17 @@ public class SalesModel {
         this.unitPrice = unitPrice;
     }
 
-    public String getProductName() { return productName; }
-    public int getQuantitySold() { return quantitySold; }
-    public double getUnitPrice() { return unitPrice; }
+    public String getProductName() {
+        return productName;
+    }
+
+    public int getQuantitySold() {
+        return quantitySold;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
 
     public double getTotalRevenue() {
         return quantitySold * unitPrice;

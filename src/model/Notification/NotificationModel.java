@@ -9,6 +9,11 @@ public class NotificationModel {
         this.message = message;
     }
 
-    public String getSender() { return sender; }
-    public String getMessage() { return message; }
+    public String getSender() {
+        return sender;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

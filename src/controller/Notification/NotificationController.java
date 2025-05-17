@@ -3,6 +3,7 @@ package controller.Notification;
 import model.Notification.NotificationModel;
 import model.Notification.NotificationRepo;
 import view.Notification.NotificationView;
+import view.SellerHomePage.SellerHomePageView;
 
 public class NotificationController {
     public NotificationController(String sellerName, NotificationRepo repo) {
@@ -19,5 +20,6 @@ public class NotificationController {
             view.showMessage("Notification sent to customers!");
             view.dispose();
         });
+
     }
 }
