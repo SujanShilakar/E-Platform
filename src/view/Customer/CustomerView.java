@@ -17,9 +17,6 @@ public class CustomerView extends JFrame {
     public JButton trackOrdersButton = new JButton("Track Orders");
     public JButton logoutButton = new JButton("Logout");
     public JButton backButton = new JButton("Back");
-    
-
-
     public JTextField searchField = new JTextField(15);
     public JTextField cartInputField = new JTextField(15);
     public JTextArea displayArea = new JTextArea(10, 30);

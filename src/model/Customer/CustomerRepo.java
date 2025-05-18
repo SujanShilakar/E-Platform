@@ -1,7 +1,7 @@
 package model.Customer;
 
 
-import model.CustomerModel;
+import model.Customer.CustomerModel;
 import java.util.ArrayList;
 import java.util.List;
 

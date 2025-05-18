@@ -1,5 +1,6 @@
 package controller.Login;
 
+import controller.Customer.CustomerController;
 import controller.Notification.NotificationController;
 import model.Login.LoginModel;
 import model.Login.LoginRepo;
@@ -103,6 +104,8 @@ public class LoginController {
                         NotificationRepo notificationRepo = new NotificationRepo();
 
                         CustomerView customerView = new CustomerView(notificationRepo);
+                        CustomerController controller = new CustomerController(customerView);
+                        String customerId = user.getUsername();
                         customerView.setVisible(true);
 
                         customerView.logoutButton.addActionListener(ev -> {
@@ -111,6 +114,24 @@ public class LoginController {
                             new LoginController(userRepo, newLogin); // Reopen login
                             newLogin.setVisible(true);
                         });
+
+
+
+                            customerView.browseButton.addActionListener(a -> controller.browseProducts());
+                            customerView.searchButton.addActionListener(a -> {
+                                String keyword = customerView.searchField.getText();
+                                controller.searchProduct(keyword);
+                            });
+                            customerView.addToCartButton.addActionListener(a -> {
+                                String productName = customerView.cartInputField.getText();
+                                controller.addToCart(productName);
+                            });
+                            customerView.viewCartButton.addActionListener(a -> controller.viewCart());
+                            customerView.payButton.addActionListener(a -> controller.makePayment(customerId));
+                            customerView.checkoutButton.addActionListener(a -> controller.checkout(customerId));
+                            customerView.trackOrdersButton.addActionListener(a -> controller.trackOrders(customerId));
+                            customerView.logoutButton.addActionListener(a -> customerView.dispose());
+                            customerView.backButton.addActionListener(a -> customerView.dispose());
 
                     }
 
