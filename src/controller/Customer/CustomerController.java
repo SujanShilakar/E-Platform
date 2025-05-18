@@ -141,12 +141,19 @@ public class CustomerController {
 
         view.displayArea.setText("📦 Checkout Complete:\n");
         int count = 1;
-        for (String product : cartItems) {
-            String orderId = "ORD" + System.currentTimeMillis() + count++;
-            OrderModel order = new OrderModel(orderId, customerId, product, 1, "Pending");
+for (String productName : cartItems) {
+    for (ProductModel p : productRepo.getAllProducts()) {
+        if (p.getName().equalsIgnoreCase(productName) && p.getStock() > 0) {
+            p.setStock(p.getStock() - 1); // 🔻 Reduce stock
+            String orderId = "ORD" + count++;
+            OrderModel order = new OrderModel(orderId, customerId, productName, 1, "Pending");
             orderList.add(order);
-            view.displayArea.append("🛍️ " + product + " | Order ID: " + orderId + " | Status: Pending\n");
+            view.displayArea.append("Product: " + productName + " | Order ID: " + orderId + " | Status: Pending\n");
+            break;
         }
+    }
+}
+
 
         view.displayArea.append("\n✅ Thank you for shopping with us!\n");
 
