@@ -129,7 +129,7 @@ public class ProductController {
             home.logoutButton.addActionListener(ev -> {
                 home.dispose();
                 LoginView newLogin = new LoginView();
-                new LoginController(new LoginRepo(), newLogin);
+                new LoginController(new LoginRepo(), newLogin , new ProductRepo(), new NotificationRepo());
                 newLogin.setVisible(true);
 
             });

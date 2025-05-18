@@ -47,7 +47,7 @@ public class SellerController {
         home.logoutButton.addActionListener(e -> {
             home.dispose();
             LoginView loginView = new LoginView();
-            new LoginController(loginRepo, loginView);
+            new LoginController(loginRepo, loginView ,productRepo , notificationRepo);
             loginView.setVisible(true);
         });
 
