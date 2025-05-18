@@ -38,6 +38,11 @@ Welcome to the **Seller & Customer Dashboard** — a Java desktop application to
 
 - User-friendly notifications & error handling
 
+  ## 📂 Repository Link
+
+Check out the full source code on GitHub:  
+[https://github.com/SujanShilakar/E-Platform/tree/master](https://github.com/SujanShilakar/E-Platform/tree/master)
+
 
 ## 🙏 Thank You!
 
