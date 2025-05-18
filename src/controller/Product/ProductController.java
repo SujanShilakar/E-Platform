@@ -16,7 +16,7 @@ public class ProductController {
     private ProductRepo repo;
     private ProductView view;
     private String username;
-    private final NotificationRepo notificationRepo;
+    private  NotificationRepo notificationRepo;
 
     public ProductController(ProductRepo repo, ProductView view, String username, NotificationRepo notificationRepo,SellerHomePageView home) {
         this.repo = repo;
@@ -43,8 +43,6 @@ public class ProductController {
             }
         });
 
-<<<<<<< HEAD
-=======
         // Delete product
         view.deleteButton.addActionListener(e -> {
             try {
@@ -62,7 +60,6 @@ public class ProductController {
             try {
                 int id = Integer.parseInt(view.idField.getText().trim());
 
-                // Get field values (may be empty)
                 String name = view.nameField.getText().trim();
                 String priceText = view.priceField.getText().trim();
                 String stockText = view.stockField.getText().trim();
@@ -139,7 +136,6 @@ public class ProductController {
             home.setVisible(true);
         });
 
->>>>>>> 521307e2f0105006d7d843c4ad56054f07309e05
     }
 
     private void refreshTable() {
