@@ -11,7 +11,6 @@ public class Main {
             LoginRepo loginRepo = new LoginRepo();
             LoginView loginView = new LoginView();
 
-            // Show login window
             loginView.setVisible(true);
 
             loginView.loginButton.addActionListener(e -> {
@@ -22,17 +21,14 @@ public class Main {
                 LoginModel user = loginRepo.authenticate(username, password, role);
 
                 if (user != null) {
-                    loginView.dispose(); // Close login window
+                    loginView.dispose();
 
                     if (role.equals("customer")) {
-                        // Open Customer Dashboard
-                        CustomerController controller = new CustomerController();
-                        CustomerView customerView = new CustomerView(new NotificationRepo());
-
-                        // For now use the username as customer ID
+                        NotificationRepo notificationRepo = new NotificationRepo();
+                        CustomerView customerView = new CustomerView(notificationRepo);
+                        CustomerController controller = new CustomerController(customerView);
                         String customerId = user.getUsername();
 
-                        // Add button actions
                         customerView.browseButton.addActionListener(a -> controller.browseProducts());
                         customerView.searchButton.addActionListener(a -> {
                             String keyword = customerView.searchField.getText();
@@ -43,17 +39,14 @@ public class Main {
                             controller.addToCart(productName);
                         });
                         customerView.viewCartButton.addActionListener(a -> controller.viewCart());
+                        customerView.payButton.addActionListener(a -> controller.makePayment(customerId));
                         customerView.checkoutButton.addActionListener(a -> controller.checkout(customerId));
                         customerView.trackOrdersButton.addActionListener(a -> controller.trackOrders(customerId));
                         customerView.logoutButton.addActionListener(a -> customerView.dispose());
                         customerView.backButton.addActionListener(a -> customerView.dispose());
+                    } else {
+                        System.out.println("Seller login successful (GUI pending).\n");
                     }
-
-                    // 👉 You can add Seller Dashboard logic here if needed
-                    else if (role.equals("seller")) {
-                        System.out.println("Seller login successful (you can link SellerView here).");
-                    }
-
                 } else {
                     loginView.showMessage("Invalid credentials. Try again.");
                 }
